@@ -61,26 +61,31 @@
 		"HH-Resume-Languages-Language-Degree-Select" => "basic",
 		);
         
+		
 		$this->webDriver->findElement(WebDriverBy::linkText("Разместить резюме"))->click();
 		
+		//Пол
 		$element = $this->webDriver->findElement(WebDriverBy::className("HH-Resume-Gender-Value"));
 		$element = $this->webDriver->findElement(WebDriverBy::className("bloko-radio__text"))->click();;
 		
-		
+		//Заполнение форм
 		foreach ($forms as $input => $value) {
 			$this->webDriver->findElement(WebDriverBy::name($input))->sendKeys($value);
 		}
 		
-		
+		//Заполнение чекбоксов
 		foreach ($checkbox as $input => $value) {
 			$this->webDriver->findElement(WebDriverBy::xpath("//span[text()='$value']"))->click();;
 		}
 		
+		//Выбор из вариантов
 		foreach ($options as $input => $value) {
 			$option = $this->webDriver->findElement(WebDriverBy::className($input));
 			$option = new WebDriverSelect($option);
 			$option->selectByValue($value);
 		}
+		
+		//Подтверждение
 		$this->webDriver->findElement(WebDriverBy::className("HH-Resume-Form-Submit"))->click();
 		$this->webDriver->wait(10,100);
 		
@@ -90,7 +95,7 @@
 		* @Then I delete CV
 	*/
     public function iDeleteCV()
-    {
+    {   //Удаление резюме
        	$this->webDriver->findElement(WebDriverBy::linkText("Посмотреть резюме"))->click();
 		$this->webDriver->findElement(WebDriverBy::className("HH-Resume-DeleteButton"))->click();
 		$this->webDriver->switchTo()->alert()->accept();
@@ -113,6 +118,8 @@
 		"username" => "samp@sample.ru",
 		"password" => "123qwe",
 		);
+		
+		//Заполнение логина и пароля
 	    $this->webDriver->get($this->baseURL,"/");
 		$form = $this->webDriver->findElement(WebDriverBy::className('login-form'));
 		foreach ($loginform as $input => $value) {
@@ -138,6 +145,6 @@
 	*/
     public function closeWebDriver(AfterScenarioScope $event)
     {
-		// if($this->webDriver) $this->webDriver->quit();
+		if($this->webDriver) $this->webDriver->quit();
 	}
 	}
